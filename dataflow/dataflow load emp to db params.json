@@ -1,5 +1,5 @@
 {
-	"name": "dataflow load emp to db_copy1",
+	"name": "dataflow load emp to db params",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -21,8 +21,15 @@
 					"name": "empMasterDb"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "filter1"
+				}
+			],
 			"scriptLines": [
+				"parameters{",
+				"     EmpID_param as integer (100002)",
+				"}",
 				"source(output(",
 				"          EmployeeID as string,",
 				"          LastName as string,",
@@ -31,7 +38,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> empMasterLake",
-				"empMasterLake sink(allowSchemaDrift: true,",
+				"empMasterLake filter(toInteger(EmployeeID)!=$EmpID_param) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          EmployeeID as string,",

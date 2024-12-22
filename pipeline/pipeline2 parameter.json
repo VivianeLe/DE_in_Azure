@@ -1,0 +1,51 @@
+{
+	"name": "pipeline2 parameter",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow load emp to db params",
+						"type": "DataFlowReference",
+						"parameters": {
+							"EmpID_param": {
+								"value": "@pipeline().parameters.pl_empID_param",
+								"type": "Expression"
+							}
+						}
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "AzureDataLakeStorage1",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "viviane/stagingtest"
+					},
+					"integrationRuntime": {
+						"referenceName": "integrationRuntime1",
+						"type": "IntegrationRuntimeReference"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"pl_empID_param": {
+				"type": "int",
+				"defaultValue": 100003
+			}
+		},
+		"annotations": []
+	}
+}
