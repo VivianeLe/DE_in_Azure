@@ -19,18 +19,8 @@
 						"referenceName": "dataflow load emp to db params",
 						"type": "DataFlowReference",
 						"parameters": {
-							"EmpID_param": {
-								"value": "@pipeline().parameters.pl_empID_param",
-								"type": "Expression"
-							}
+							"EmpID_param": "100002"
 						}
-					},
-					"staging": {
-						"linkedService": {
-							"referenceName": "AzureDataLakeStorage1",
-							"type": "LinkedServiceReference"
-						},
-						"folderPath": "viviane/stagingtest"
 					},
 					"integrationRuntime": {
 						"referenceName": "integrationRuntime1",
