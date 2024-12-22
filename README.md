@@ -120,31 +120,6 @@ DE_in_Azure/
 
 ---
 
-## Future Enhancements
-
-- Add examples for real-time data ingestion using Event Hubs.
-- Implement CI/CD workflows with GitHub Actions or Azure DevOps.
-- Integrate with Databricks for advanced data transformations.
-- Add logging and monitoring dashboards using Azure Monitor.
-
----
-
-## Contributing
-
-Contributions are welcome! Follow these steps:
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Commit your changes and open a pull request.
-
----
-
 ## License
 
 This repository is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-This README provides a comprehensive overview of your project, its structure, deployment steps, and future directions. Let me know if you'd like any adjustments!
