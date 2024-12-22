@@ -57,7 +57,7 @@ DE_in_Azure/
 ## Key Components
 
 1. **Pipelines**:
-   - `EmpMaster` Pipeline: Handles the orchestration of employee data ingestion and transformation.
+   - Handles the orchestration of employee data ingestion and transformation.
    - Modular pipelines to handle specific data workflows.
 
 2. **Datasets**:
