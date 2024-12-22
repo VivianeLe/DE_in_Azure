@@ -1,0 +1,51 @@
+{
+	"name": "dataflow load agency to db",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AgencyMaster",
+						"type": "DatasetReference"
+					},
+					"name": "agencyMasterLake"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dbo_NYC_Payroll_AGENCY_MD",
+						"type": "DatasetReference"
+					},
+					"name": "agencyMasterDbSink"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          AgencyID as string,",
+				"          AgencyName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> agencyMasterLake",
+				"agencyMasterLake sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          AgencyID as string,",
+				"          AgencyName as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> agencyMasterDbSink"
+			]
+		}
+	}
+}

@@ -1,0 +1,51 @@
+{
+	"name": "dataflow load title to db",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "TitleMaster",
+						"type": "DatasetReference"
+					},
+					"name": "titleMasterLake"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dbo_NYC_Payroll_TITLE_MD",
+						"type": "DatasetReference"
+					},
+					"name": "titleMasterDb"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          TitleCode as string,",
+				"          TitleDescription as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> titleMasterLake",
+				"titleMasterLake sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TitleCode as string,",
+				"          TitleDescription as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> titleMasterDb"
+			]
+		}
+	}
+}

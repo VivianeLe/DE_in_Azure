@@ -1,0 +1,9 @@
+{
+	"name": "udacityFactory",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8b9098cc-ac86-41a3-952c-d1bf173cd1d0",
+		"tenantId": "fd35a11e-1610-46b6-a081-fcd8b4919f40"
+	}
+}
