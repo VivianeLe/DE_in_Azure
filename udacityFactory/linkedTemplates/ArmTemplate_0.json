@@ -991,6 +991,72 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow load emp to db params')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "EmpMaster",
+								"type": "DatasetReference"
+							},
+							"name": "empMasterLake"
+						}
+					],
+					"sinks": [
+						{
+							"linkedService": {
+								"referenceName": "AzureDataLakeStorage1",
+								"type": "LinkedServiceReference"
+							},
+							"name": "empMasterDb"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filter1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     EmpID_param as integer (100002)",
+						"}",
+						"source(output(",
+						"          EmployeeID as string,",
+						"          LastName as string,",
+						"          FirstName as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> empMasterLake",
+						"empMasterLake filter(toInteger(EmployeeID)!=$EmpID_param) ~> filter1",
+						"filter1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'delimited',",
+						"     fileSystem: 'viviane',",
+						"     folderPath: 'stagingtest',",
+						"     truncate: true,",
+						"     columnDelimiter: ',',",
+						"     escapeChar: '\\\\',",
+						"     quoteChar: '\\\"',",
+						"     columnNamesAsHeader: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> empMasterDb"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/EmpMaster')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow load emp to db')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1047,118 +1113,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/EmpMaster')]",
 				"[concat(variables('factoryId'), '/datasets/dbo_NYC_Payroll_EMP_MD')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflow load payroll 2020 to db')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "nycpayroll_2020",
-								"type": "DatasetReference"
-							},
-							"name": "payroll2020"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "dbo_NYC_Payroll_Data_2020",
-								"type": "DatasetReference"
-							},
-							"name": "payroll2020lakesink"
-						}
-					],
-					"transformations": [],
-					"scriptLines": [
-						"source(output(",
-						"          FiscalYear as string,",
-						"          PayrollNumber as string,",
-						"          AgencyID as string,",
-						"          AgencyName as string,",
-						"          EmployeeID as string,",
-						"          LastName as string,",
-						"          FirstName as string,",
-						"          AgencyStartDate as string,",
-						"          WorkLocationBorough as string,",
-						"          TitleCode as string,",
-						"          TitleDescription as string,",
-						"          LeaveStatusasofJune30 as string,",
-						"          BaseSalary as string,",
-						"          PayBasis as string,",
-						"          RegularHours as string,",
-						"          RegularGrossPaid as string,",
-						"          OTHours as string,",
-						"          TotalOTPaid as string,",
-						"          TotalOtherPay as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> payroll2020",
-						"payroll2020 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          FiscalYear as integer,",
-						"          PayrollNumber as integer,",
-						"          AgencyID as string,",
-						"          AgencyName as string,",
-						"          EmployeeID as string,",
-						"          LastName as string,",
-						"          FirstName as string,",
-						"          AgencyStartDate as date,",
-						"          WorkLocationBorough as string,",
-						"          TitleCode as string,",
-						"          TitleDescription as string,",
-						"          LeaveStatusasofJune30 as string,",
-						"          BaseSalary as double,",
-						"          PayBasis as string,",
-						"          RegularHours as double,",
-						"          RegularGrossPaid as double,",
-						"          OTHours as double,",
-						"          TotalOTPaid as double,",
-						"          TotalOtherPay as double",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     truncate:true,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          FiscalYear,",
-						"          PayrollNumber,",
-						"          AgencyID,",
-						"          AgencyName,",
-						"          EmployeeID,",
-						"          LastName,",
-						"          FirstName,",
-						"          AgencyStartDate,",
-						"          WorkLocationBorough,",
-						"          TitleCode,",
-						"          TitleDescription,",
-						"          LeaveStatusasofJune30,",
-						"          BaseSalary,",
-						"          PayBasis,",
-						"          RegularHours,",
-						"          RegularGrossPaid,",
-						"          OTHours,",
-						"          TotalOTPaid,",
-						"          TotalOtherPay",
-						"     )) ~> payroll2020lakesink"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/nycpayroll_2020')]",
-				"[concat(variables('factoryId'), '/datasets/dbo_NYC_Payroll_Data_2020')]"
 			]
 		}
 	]
