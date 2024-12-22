@@ -14,9 +14,9 @@
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "dbo_NYC_Payroll_EMP_MD",
-						"type": "DatasetReference"
+					"linkedService": {
+						"referenceName": "AzureDataLakeStorage1",
+						"type": "LinkedServiceReference"
 					},
 					"name": "empMasterDb"
 				}
@@ -41,20 +41,19 @@
 				"empMasterLake filter(toInteger(EmployeeID)!=$EmpID_param) ~> filter1",
 				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          EmployeeID as string,",
-				"          LastName as string,",
-				"          FirstName as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     truncate:true,",
-				"     format: 'table',",
+				"     format: 'delimited',",
+				"     fileSystem: 'viviane',",
+				"     folderPath: 'stagingtest',",
+				"     truncate: true,",
+				"     columnDelimiter: ',',",
+				"     escapeChar: '\\\\',",
+				"     quoteChar: '\\\"',",
+				"     columnNamesAsHeader: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> empMasterDb"
+				"     skipDuplicateMapOutputs: true) ~> empMasterDb"
 			]
 		}
 	}
