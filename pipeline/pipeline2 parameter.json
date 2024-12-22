@@ -19,7 +19,10 @@
 						"referenceName": "dataflow load emp to db params",
 						"type": "DataFlowReference",
 						"parameters": {
-							"EmpID_param": "100002"
+							"EmpID_param": {
+								"value": "@pipeline().parameters.pl_empID_param",
+								"type": "Expression"
+							}
 						}
 					},
 					"integrationRuntime": {
